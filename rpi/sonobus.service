@@ -1,0 +1,21 @@
+[Unit]
+Description=Sonobus Headless Client
+After=network-online.target sound.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Adjust User/Group if running as system service, or install as user service
+# User=pi
+# Group=pi
+
+# Environment needed for some audio backends (like Jack/Pulse) if running as user
+Environment="DISPLAY=:0"
+Environment="XDG_RUNTIME_DIR=/run/user/%U"
+
+ExecStart=/bin/bash /opt/sonobus/rpi/start_sonobus.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

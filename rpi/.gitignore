@@ -1,0 +1,12 @@
+# Binary artifacts
+*.img
+*.img.xz
+image_builder/artifacts/
+
+# Local configuration (secrets)
+config.env
+docker/config.env
+
+# System artifacts if any
+__pycache__/
+*.pyc

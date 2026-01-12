@@ -1,0 +1,15 @@
+[Unit]
+Description=Sonobus Web Configurator
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/sonobus/rpi/web_config.py
+Restart=always
+RestartSec=10
+User=root
+# Running as root to allow 'systemctl restart sonobus' easily. 
+# For better security, use sudo rules and a non-root user.
+
+[Install]
+WantedBy=multi-user.target

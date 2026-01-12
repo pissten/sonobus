@@ -1,0 +1,37 @@
+FROM debian:bookworm-slim
+
+# Install build dependencies
+# We are building for ARM64 inside this container (via QEMU emulation if on x86)
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    cmake \
+    libasound2-dev \
+    libjack-jackd2-dev \
+    libopus-dev \
+    opus-tools \
+    libx11-dev \
+    libxext-dev \
+    libxinerama-dev \
+    libxrandr-dev \
+    libxcursor-dev \
+    libgl-dev \
+    libfreetype6-dev \
+    libcurl4-openssl-dev \
+    pkg-config \
+    python3 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+# Copy source code relative to the build context
+COPY . /build
+
+# Build Sonobus Headless (Release mode for performance)
+WORKDIR /build/linux
+# Inject set -e to make sure build fails if cmake fails
+RUN sed -i '2i set -e' build.sh && ./build.sh
+
+# The entrypoint can be used to extract the binary, 
+# or we can rely on `docker cp` in the runner script.
+CMD ["/bin/bash"]

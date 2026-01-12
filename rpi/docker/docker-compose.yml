@@ -1,0 +1,18 @@
+services:
+  sonobus:
+    build:
+      context: ../../
+      dockerfile: rpi/docker/Dockerfile
+    container_name: sonobus_headless
+    network_mode: host
+    device_cgroup_rules:
+      - 'c 116:* rwm' # ALSA devices
+    volumes:
+      # Persist configuration
+      - ./config.env:/opt/sonobus/config.env
+      # Optional: Share audio devices (Linux host)
+      - /dev/snd:/dev/snd
+    environment:
+      - SONOBUS_USER=DockerTest
+      - SONOBUS_GROUP=Rigatta
+      - WEB_PORT=8030
